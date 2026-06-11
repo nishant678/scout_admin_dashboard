@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { Users, CheckCircle, MapPin, DollarSign, AlertTriangle, RefreshCw } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { Users, CheckCircle, MapPin, DollarSign, AlertTriangle, RefreshCw, FileDown } from 'lucide-react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import { AnalyticsCard } from '../../components/analytics';
 import { LineChartComponent, PieChartComponent } from '../../components/charts';
@@ -17,10 +19,31 @@ import { formatDate } from '../../utils/formatters';
 const PIE_FILLS = [CHART_COLORS.primary, CHART_COLORS.secondary, CHART_COLORS.tertiary, CHART_COLORS.warning, CHART_COLORS.danger];
 
 const DashboardPage: React.FC = () => {
+  const navigate = useNavigate();
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [registrations, setRegistrations] = useState<Reg[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const exportCSV = useCallback(() => {
+    if (registrations.length === 0) {
+      toast.error('No data to export');
+      return;
+    }
+    const headers = ['Name', 'Email', 'Section', 'Unit', 'County', 'Status', 'Date'];
+    const rows = registrations.map(r => [
+      r.name, r.email, r.section, r.unit, r.county, r.status, r.submissionDate,
+    ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `registrations_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('CSV exported successfully');
+  }, [registrations]);
 
   const load = useCallback(() => {
     setLoading(true);
@@ -111,10 +134,10 @@ const DashboardPage: React.FC = () => {
         )}
         <Card><h3 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
           <div className="space-y-3">
-            <Button variant="primary" className="w-full">Add New Member</Button>
-            <Button variant="secondary" className="w-full">Process Approvals</Button>
-            <Button variant="ghost" className="w-full">Generate Report</Button>
-            <Button variant="ghost" className="w-full">Export Data</Button>
+            <Button variant="primary" className="w-full" onClick={() => navigate('/members')}>Add New Member</Button>
+            <Button variant="secondary" className="w-full" onClick={() => navigate('/approvals')}>Process Approvals</Button>
+            <Button variant="ghost" className="w-full" onClick={() => navigate('/reports')}>Generate Report</Button>
+            <Button variant="ghost" className="w-full" onClick={exportCSV}><FileDown size={16} className="mr-2 inline" />Export Data</Button>
           </div>
         </Card>
       </section>

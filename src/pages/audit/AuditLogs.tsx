@@ -6,7 +6,7 @@ import Input from '../../components/ui/Input';
 import Badge from '../../components/ui/Badge';
 import { CardSkeleton, TableSkeleton } from '../../components/ui';
 import DataTable from '../../components/tables/DataTable';
-import { Shield, Search, Download, Clock } from 'lucide-react';
+import { Shield, Search, Clock } from 'lucide-react';
 import { getAuditLogs, getAuditStats, AuditLog, AuditStats } from '../../services/auditService';
 
 const AuditLogsPage: React.FC = () => {
@@ -45,7 +45,6 @@ const AuditLogsPage: React.FC = () => {
     <DashboardLayout title="Audit Logs">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div><h2 className="text-2xl font-bold text-gray-900">Security & Audit Logs</h2><p className="text-gray-500 mt-1">Monitor system activities and track administrative actions</p></div>
-        <Button variant="secondary" size="sm" className="flex items-center gap-2"><Download size={18} />Export Logs</Button>
       </div>
 
       {!stats ? <CardSkeleton count={3} /> : (

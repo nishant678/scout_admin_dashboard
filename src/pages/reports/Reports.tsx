@@ -51,8 +51,8 @@ const ReportsPage: React.FC = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <Card><div className="flex items-center justify-between mb-6"><h3 className="text-lg font-bold text-gray-900">Registration Trends</h3></div><div className="h-64"><LineChartComponent title="Registration Trends" data={trendData} /></div></Card>
-          <Card><div className="flex items-center justify-between mb-6"><h3 className="text-lg font-bold text-gray-900">Membership by Section</h3></div><div className="h-64"><BarChartComponent title="Section Breakdown" data={sectionData} /></div></Card>
+          <LineChartComponent title="Registration Trends" data={trendData} />
+          <BarChartComponent title="Section Breakdown" data={sectionData} />
         </div>
       )}
 

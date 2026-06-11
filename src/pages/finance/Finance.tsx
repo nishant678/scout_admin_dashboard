@@ -5,7 +5,7 @@ import Button from '../../components/ui/Button';
 import Badge from '../../components/ui/Badge';
 import { CardSkeleton, TableSkeleton } from '../../components/ui';
 import DataTable from '../../components/tables/DataTable';
-import { DollarSign, Download, Plus, TrendingUp, TrendingDown } from 'lucide-react';
+import { DollarSign, Plus, TrendingUp, TrendingDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getTransactions, getFinanceSummary, createTransaction, FinanceTransaction, FinanceSummary } from '../../services/financeService';
 import { PieChartComponent } from '../../components/charts';
@@ -70,7 +70,6 @@ const FinancePage: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div><h2 className="text-2xl font-bold text-gray-900">Financial Management</h2><p className="text-gray-500 mt-1">Track revenue and expenses</p></div>
         <div className="flex items-center gap-2">
-          <Button variant="secondary" size="sm" className="flex items-center gap-2"><Download size={18} />Export</Button>
           <Button variant="primary" size="sm" className="flex items-center gap-2" onClick={() => setShowModal(true)}><Plus size={18} />Add Transaction</Button>
         </div>
       </div>
@@ -85,16 +84,7 @@ const FinancePage: React.FC = () => {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <Card className="lg:col-span-1">
-          <h3 className="text-lg font-bold text-gray-900 mb-6">Revenue Breakdown</h3>
-          <div className="h-64"><PieChartComponent title="Revenue Sources" data={revenueData} /></div>
-          <div className="mt-6 space-y-3">{revenueData.map((item, idx) => (
-            <div key={idx} className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.fill }}></div><span className="text-gray-600">{item.name}</span></div>
-              <span className="font-semibold text-gray-900">KES {(item.value / 1000).toFixed(0)}K</span>
-            </div>
-          ))}</div>
-        </Card>
+        <div className="lg:col-span-1"><PieChartComponent title="Revenue Distribution" data={revenueData} /></div>
         <div className="lg:col-span-2">
           <h3 className="text-lg font-bold text-gray-900 mb-4">Recent Transactions</h3>
           {loading ? <TableSkeleton rows={5} cols={5} /> : (
