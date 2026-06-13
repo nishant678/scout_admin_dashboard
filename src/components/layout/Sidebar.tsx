@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, LogOut } from 'lucide-react';
 import { cn } from '../../utils';
 import { NAVIGATION_ITEMS } from '../../constants';
 import { useSidebarStore } from '../../store';
 import { useAuthStore } from '../../store/authStore';
+import { getDashboardMetrics } from '../../services/dashboardService';
 
 const Sidebar: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebarStore();
   const location = useLocation();
   const navigate = useNavigate();
   const logout = useAuthStore((s) => s.logout);
+  const [pendingCount, setPendingCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    getDashboardMetrics().then(m => setPendingCount(m.pendingApprovals.current)).catch(() => {});
+  }, []);
 
   const isItemActive = (path: string) => location.pathname === path;
 
@@ -73,9 +79,9 @@ const Sidebar: React.FC = () => {
               >
                 <span className="text-lg">{getIconComponent(item.icon)}</span>
                 <span className="flex-1">{item.label}</span>
-                {item.badge && (
+                {(item.id === 'approvals' ? (pendingCount != null && pendingCount > 0) : item.badge != null) && (
                   <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    {item.badge}
+                    {item.id === 'approvals' ? pendingCount : item.badge}
                   </span>
                 )}
                 {isActive && (
