@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -7,15 +7,14 @@ import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Textarea from '../ui/Textarea';
 import { cn } from '../../utils';
+import { getSections } from '../../services/sectionService';
 
 const registrationSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
     email: z.string().email('Invalid email address'),
     phone: z.string().min(10, 'Phone must be at least 10 digits'),
     age: z.coerce.number().min(5, 'Age must be at least 5').max(120, 'Invalid age'),
-    section: z.enum(['Beavers', 'Cubs', 'Scouts', 'Ventures', 'Rovers'], {
-        errorMap: () => ({ message: 'Please select a valid section' }),
-    }),
+    section: z.string().min(1, 'Please select a section'),
     unit: z.string().min(1, 'Unit is required'),
     county: z.string().min(1, 'County is required'),
 });
@@ -42,12 +41,17 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         resolver: zodResolver(registrationSchema),
     });
 
+    const [sections, setSections] = useState<string[]>([]);
+
+    useEffect(() => {
+        getSections().then((list) => setSections(list.map((s) => s.name))).catch(() => {});
+    }, []);
+
     const handleFormSubmit = (data: RegistrationFormData) => {
         onSubmit(data);
         reset();
     };
 
-    const sections = ['Beavers', 'Cubs', 'Scouts', 'Ventures', 'Rovers'];
     const counties = [
         'Nairobi',
         'Mombasa',

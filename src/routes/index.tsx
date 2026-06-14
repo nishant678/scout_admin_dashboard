@@ -10,6 +10,7 @@ import FinancePage from '../pages/finance/Finance';
 import ReportsPage from '../pages/reports/Reports';
 import AuditLogsPage from '../pages/audit/AuditLogs';
 import SettingsPage from '../pages/settings/Settings';
+import SectionsPage from '../pages/sections/Sections';
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
 
@@ -33,6 +34,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="/registrations" element={<ProtectedRoute><RegistrationsPage /></ProtectedRoute>} />
+        <Route path="/sections" element={<ProtectedRoute><SectionsPage /></ProtectedRoute>} />
         <Route path="/approvals" element={<ProtectedRoute><ApprovalsPage /></ProtectedRoute>} />
         <Route path="/members" element={<ProtectedRoute><MembersPage /></ProtectedRoute>} />
         <Route path="/units" element={<ProtectedRoute><UnitsPage /></ProtectedRoute>} />
