@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, Search, LogOut } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
@@ -14,6 +14,9 @@ const Header: React.FC<HeaderProps> = ({ title = 'Dashboard' }) => {
   const logout = useAuthStore((s) => s.logout);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const today = useMemo(() => new Date().toLocaleDateString('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric',
+  }), []);
 
   const handleLogout = () => {
     logout();
@@ -26,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Dashboard' }) => {
         {/* Title */}
         <div className="flex-1 min-w-0">
           <h1 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">{title}</h1>
-          <p className="text-xs sm:text-sm text-gray-500">May 1, 2026 - May 12, 2026</p>
+          <p className="text-xs sm:text-sm text-gray-500">{today}</p>
         </div>
 
         {/* Search Bar */}
