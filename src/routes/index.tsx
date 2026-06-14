@@ -11,6 +11,7 @@ import ReportsPage from '../pages/reports/Reports';
 import AuditLogsPage from '../pages/audit/AuditLogs';
 import SettingsPage from '../pages/settings/Settings';
 import SectionsPage from '../pages/sections/Sections';
+import CountiesPage from '../pages/counties/Counties';
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
 
@@ -35,6 +36,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="/registrations" element={<ProtectedRoute><RegistrationsPage /></ProtectedRoute>} />
         <Route path="/sections" element={<ProtectedRoute><SectionsPage /></ProtectedRoute>} />
+        <Route path="/counties" element={<ProtectedRoute><CountiesPage /></ProtectedRoute>} />
         <Route path="/approvals" element={<ProtectedRoute><ApprovalsPage /></ProtectedRoute>} />
         <Route path="/members" element={<ProtectedRoute><MembersPage /></ProtectedRoute>} />
         <Route path="/units" element={<ProtectedRoute><UnitsPage /></ProtectedRoute>} />

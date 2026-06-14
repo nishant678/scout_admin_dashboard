@@ -7,7 +7,7 @@ import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Textarea from '../ui/Textarea';
 import { cn } from '../../utils';
-import { getSections } from '../../services/sectionService';
+import { getSections, getCounties } from '../../services/sectionService';
 
 const registrationSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -42,31 +42,17 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     });
 
     const [sections, setSections] = useState<string[]>([]);
+    const [counties, setCounties] = useState<string[]>([]);
 
     useEffect(() => {
         getSections().then((list) => setSections(list.map((s) => s.name))).catch(() => {});
+        getCounties().then((list) => setCounties(list.map((c) => c.name))).catch(() => {});
     }, []);
 
     const handleFormSubmit = (data: RegistrationFormData) => {
         onSubmit(data);
         reset();
     };
-
-    const counties = [
-        'Nairobi',
-        'Mombasa',
-        'Kisumu',
-        'Nakuru',
-        'Eldoret',
-        'Naivasha',
-        'Kericho',
-        'Nyeri',
-        'Muranga',
-        'Kiambu',
-        'Machakos',
-        'Makueni',
-        'Kajiado',
-    ];
 
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-5">

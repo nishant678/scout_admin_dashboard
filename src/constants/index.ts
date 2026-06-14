@@ -3,6 +3,7 @@ export const NAVIGATION_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: 'BarChart3', path: '/' },
   { id: 'registrations', label: 'Registrations', icon: 'ClipboardList', path: '/registrations' },
   { id: 'sections', label: 'Sections', icon: 'Layers', path: '/sections' },
+  { id: 'counties', label: 'Counties', icon: 'Map', path: '/counties' },
   { id: 'approvals', label: 'Approvals', icon: 'CheckCircle', path: '/approvals', badge: 12 },
   { id: 'members', label: 'Members', icon: 'Users', path: '/members' },
   { id: 'units', label: 'Units & Locations', icon: 'MapPin', path: '/units' },

@@ -31,3 +31,15 @@ export const deleteSection = (id: number) =>
 
 export const getCounties = () =>
   api.get<{ data: County[] }>('/counties').then(r => r.data.data);
+
+export const getCounty = (id: number) =>
+  api.get<{ data: County }>(`/counties/${id}`).then(r => r.data.data);
+
+export const createCounty = (data: { name: string; code: string }) =>
+  api.post<{ data: County }>('/counties', data).then(r => r.data.data);
+
+export const updateCounty = (id: number, data: { name: string; code: string }) =>
+  api.put<{ data: County }>(`/counties/${id}`, data).then(r => r.data.data);
+
+export const deleteCounty = (id: number) =>
+  api.delete(`/counties/${id}`).then(r => r.data);
