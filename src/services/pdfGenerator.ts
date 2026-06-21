@@ -121,12 +121,12 @@ export function generatePDF(data: ReportData): jsPDF {
   }
 
   // Page labels
-  for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
+  for (let i = 1; i <= doc.getNumberOfPages(); i++) {
     doc.setPage(i);
     doc.setFontSize(7);
     doc.setTextColor(156, 163, 175);
     doc.text(
-      footerText(i, doc.internal.getNumberOfPages()),
+      footerText(i, doc.getNumberOfPages()),
       pw / 2, ph - 10, { align: 'center' }
     );
   }
