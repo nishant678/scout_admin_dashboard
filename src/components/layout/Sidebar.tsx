@@ -11,6 +11,7 @@ const Sidebar: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebarStore();
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
   const [pendingCount, setPendingCount] = useState<number | null>(null);
 
@@ -18,11 +19,13 @@ const Sidebar: React.FC = () => {
     getDashboardMetrics().then(m => setPendingCount(m.pendingApprovals.current)).catch(() => {});
   }, []);
 
+  const userRole = user?.role || '';
+  const visibleItems = NAVIGATION_ITEMS.filter(item => !item.roles || item.roles.includes(userRole));
+
   const isItemActive = (path: string) => location.pathname === path;
 
   return (
     <>
-      {/* Mobile Toggle Button */}
       <button
         onClick={toggleSidebar}
         className="fixed top-4 left-4 z-50 lg:hidden bg-primary-700 text-white p-2 rounded-lg hover:bg-primary-800 transition-colors"
@@ -30,7 +33,6 @@ const Sidebar: React.FC = () => {
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
-      {/* Overlay for mobile */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-30 lg:hidden"
@@ -38,18 +40,14 @@ const Sidebar: React.FC = () => {
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={cn(
           'w-64 h-screen bg-gradient-to-b from-primary-800 to-primary-900',
           'shadow-2xl flex flex-col',
-          // Mobile: fixed positioning with slide animation
           'fixed left-0 top-0 z-40 transition-transform duration-300 lg:relative lg:translate-x-0',
-          // Mobile visibility, desktop always visible
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
-        {/* Logo Section */}
         <div className="p-6 border-b border-primary-700 flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-primary-300 flex items-center justify-center">
@@ -62,9 +60,8 @@ const Sidebar: React.FC = () => {
           </div>
         </div>
 
-        {/* Navigation Items - Scrollable */}
         <nav className="p-4 space-y-1 overflow-y-auto flex-1">
-          {NAVIGATION_ITEMS.map((item) => {
+          {visibleItems.map((item) => {
             const isActive = isItemActive(item.path);
             return (
               <Link
@@ -92,7 +89,6 @@ const Sidebar: React.FC = () => {
           })}
         </nav>
 
-        {/* Logout */}
         <div className="p-4 border-t border-primary-700">
           <button
             onClick={() => { logout(); navigate('/login', { replace: true }); }}
@@ -102,18 +98,19 @@ const Sidebar: React.FC = () => {
             <span>Logout</span>
           </button>
         </div>
-      </aside >
+      </aside>
     </>
   );
 };
 
-// Helper function to get icon component
 const getIconComponent = (iconName: string): string => {
   const icons: Record<string, string> = {
     BarChart3: '📊',
-    ClipboardList: '📋',
-    CheckCircle: '✓',
     Users: '👥',
+    ClipboardList: '📋',
+    Layers: '📑',
+    Map: '🗺️',
+    CheckCircle: '✓',
     MapPin: '📍',
     DollarSign: '💰',
     FileText: '📄',

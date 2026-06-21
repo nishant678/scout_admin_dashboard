@@ -12,12 +12,15 @@ import AuditLogsPage from '../pages/audit/AuditLogs';
 import SettingsPage from '../pages/settings/Settings';
 import SectionsPage from '../pages/sections/Sections';
 import CountiesPage from '../pages/counties/Counties';
+import UsersPage from '../pages/users/Users';
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
 
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
+function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const user = useAuthStore((s) => s.user);
   if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (roles && user && !roles.includes(user.role)) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 }
 
@@ -33,16 +36,17 @@ const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
-        <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-        <Route path="/registrations" element={<ProtectedRoute><RegistrationsPage /></ProtectedRoute>} />
-        <Route path="/sections" element={<ProtectedRoute><SectionsPage /></ProtectedRoute>} />
-        <Route path="/counties" element={<ProtectedRoute><CountiesPage /></ProtectedRoute>} />
-        <Route path="/approvals" element={<ProtectedRoute><ApprovalsPage /></ProtectedRoute>} />
-        <Route path="/members" element={<ProtectedRoute><MembersPage /></ProtectedRoute>} />
-        <Route path="/units" element={<ProtectedRoute><UnitsPage /></ProtectedRoute>} />
-        <Route path="/finance" element={<ProtectedRoute><FinancePage /></ProtectedRoute>} />
-        <Route path="/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
-        <Route path="/audit" element={<ProtectedRoute><AuditLogsPage /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute roles={['ADMIN', 'LEADER']}><DashboardPage /></ProtectedRoute>} />
+        <Route path="/users" element={<ProtectedRoute roles={['ADMIN', 'LEADER']}><UsersPage /></ProtectedRoute>} />
+        <Route path="/registrations" element={<ProtectedRoute roles={['ADMIN', 'LEADER']}><RegistrationsPage /></ProtectedRoute>} />
+        <Route path="/sections" element={<ProtectedRoute roles={['ADMIN', 'LEADER']}><SectionsPage /></ProtectedRoute>} />
+        <Route path="/counties" element={<ProtectedRoute roles={['ADMIN', 'LEADER']}><CountiesPage /></ProtectedRoute>} />
+        <Route path="/approvals" element={<ProtectedRoute roles={['ADMIN', 'LEADER']}><ApprovalsPage /></ProtectedRoute>} />
+        <Route path="/members" element={<ProtectedRoute roles={['ADMIN', 'LEADER']}><MembersPage /></ProtectedRoute>} />
+        <Route path="/units" element={<ProtectedRoute roles={['ADMIN', 'LEADER']}><UnitsPage /></ProtectedRoute>} />
+        <Route path="/finance" element={<ProtectedRoute roles={['ADMIN']}><FinancePage /></ProtectedRoute>} />
+        <Route path="/reports" element={<ProtectedRoute roles={['ADMIN', 'LEADER']}><ReportsPage /></ProtectedRoute>} />
+        <Route path="/audit" element={<ProtectedRoute roles={['ADMIN']}><AuditLogsPage /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />

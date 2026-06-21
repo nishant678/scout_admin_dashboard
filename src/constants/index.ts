@@ -1,16 +1,19 @@
-// Navigation items
-export const NAVIGATION_ITEMS = [
-  { id: 'dashboard', label: 'Dashboard', icon: 'BarChart3', path: '/' },
-  { id: 'registrations', label: 'Registrations', icon: 'ClipboardList', path: '/registrations' },
-  { id: 'sections', label: 'Sections', icon: 'Layers', path: '/sections' },
-  { id: 'counties', label: 'Counties', icon: 'Map', path: '/counties' },
-  { id: 'approvals', label: 'Approvals', icon: 'CheckCircle', path: '/approvals', badge: 12 },
-  { id: 'members', label: 'Members', icon: 'Users', path: '/members' },
-  { id: 'units', label: 'Units & Locations', icon: 'MapPin', path: '/units' },
-  { id: 'finance', label: 'Finance', icon: 'DollarSign', path: '/finance' },
-  { id: 'reports', label: 'Reports', icon: 'FileText', path: '/reports' },
-  { id: 'audit', label: 'Audit Logs', icon: 'Shield', path: '/audit' },
-  { id: 'settings', label: 'Settings', icon: 'Settings', path: '/settings' },
+// Navigation items with role-based access
+export const NAVIGATION_ITEMS: {
+  id: string; label: string; icon: string; path: string; badge?: number; roles?: string[];
+}[] = [
+  { id: 'dashboard', label: 'Dashboard', icon: 'BarChart3', path: '/dashboard', roles: ['ADMIN', 'LEADER'] },
+  { id: 'users', label: 'Users', icon: 'Users', path: '/users', roles: ['ADMIN', 'LEADER'] },
+  { id: 'registrations', label: 'Registrations', icon: 'ClipboardList', path: '/registrations', roles: ['ADMIN', 'LEADER'] },
+  { id: 'sections', label: 'Sections', icon: 'Layers', path: '/sections', roles: ['ADMIN', 'LEADER'] },
+  { id: 'counties', label: 'Counties', icon: 'Map', path: '/counties', roles: ['ADMIN', 'LEADER'] },
+  { id: 'approvals', label: 'Approvals', icon: 'CheckCircle', path: '/approvals', badge: 12, roles: ['ADMIN', 'LEADER'] },
+  { id: 'members', label: 'Members', icon: 'Users', path: '/members', roles: ['ADMIN', 'LEADER'] },
+  { id: 'units', label: 'Units & Locations', icon: 'MapPin', path: '/units', roles: ['ADMIN', 'LEADER'] },
+  { id: 'finance', label: 'Finance', icon: 'DollarSign', path: '/finance', roles: ['ADMIN'] },
+  { id: 'reports', label: 'Reports', icon: 'FileText', path: '/reports', roles: ['ADMIN', 'LEADER'] },
+  { id: 'audit', label: 'Audit Logs', icon: 'Shield', path: '/audit', roles: ['ADMIN'] },
+  { id: 'settings', label: 'Settings', icon: 'Settings', path: '/settings', roles: ['ADMIN', 'LEADER', 'USER'] },
 ];
 
 // Section types

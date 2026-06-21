@@ -115,13 +115,17 @@ export interface AuditLog {
 }
 
 // User Types
+export type UserRole = 'ADMIN' | 'LEADER' | 'USER';
+
 export interface User {
   id: string;
+  userId: string;
   name: string;
   email: string;
-  role: 'admin' | 'manager' | 'coordinator' | 'viewer';
+  role: UserRole;
   avatar?: string;
-  status: 'active' | 'inactive';
+  phone?: string;
+  isActive: boolean;
   createdAt: string;
   lastLogin?: string;
 }
